@@ -15,13 +15,13 @@
 // - Output:
 // 30 10 20 40 50
 
-std::vector<int> applyPermutation(std::vector<int>& array, std::vector<int>& nextIndex, bool combine = false) {
-	std::vector<int> new_permutation(array.size());
+std::vector<int> new_permutation;
+void applyPermutation(std::vector<int>& array, std::vector<int>& nextIndex, bool combine = false) {
 	for (int i = 0; i < (int)array.size(); i++) {
 		if (combine) new_permutation[i] = array[nextIndex[i]];
 		else new_permutation[nextIndex[i]] = array[i];
 	}
-	return new_permutation;
+	array.swap(new_permutation);
 }
 
 int main() {
@@ -33,14 +33,15 @@ int main() {
 	
 	int n, k; std::cin >> n >> k;
 	std::vector<int> A(n), P(n);
+	new_permutation.resize(n);
 	for (int i = 0; i < n; i++) std::cin >> A[i];
 	for (int i = 0; i < n; i++) std::cin >> P[i];
 
 	while (k > 0) {
 		if (k & 1) {
-			A = applyPermutation(A, P);
+			applyPermutation(A, P, false);
 		}
-		P = applyPermutation(P, P, true);
+		applyPermutation(P, P, true);
 		k >>= 1;
 	}
 

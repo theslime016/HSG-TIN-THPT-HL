@@ -13,13 +13,14 @@
 // 53
 
 long long a, b;
-int inc[] = {4, 2, 4, 2, 4, 6, 2, 6};
+int inc[] = {2,4,2,4,6,2,6,4,2,4,6,6,2,6,4,2,6,4,6,8,4,2,4,2,4,8,6,4,6,2,4,6,2,6,6,4,2,4,6,2,6,4,2,4,2,10,2};
 bool is_prime(long long x) {
     if (x < 2) return false;
     if (x < 4) return true;
     if (x%3 == 0) return false;
-    for (int d = 7, i = 0; d*d <= x; d+=inc[i]) {
-        if (i == 8) i = 0;
+    if (x%7 == 0 && x != 7) return false;
+    for (int d = 11, i = 0; d*d <= x; d+=inc[i]) {
+        i = (i+1)%46;
         if (x%d == 0) return false;
     }
     return true;

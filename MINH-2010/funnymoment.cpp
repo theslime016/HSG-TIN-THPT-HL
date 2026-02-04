@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 #define ll long long
 using namespace std;
-const ll INF = 1e9,MAXN=55,MAXK=15,SEASONS=4;
+const ll INF = 1e9,MAXN=55,MAXK=6,SEASONS=4;
 struct fun{ll to,cap,cost,rev;};
 ll dp[MAXN][SEASONS][1<<MAXK][MAXN];vector<fun> g[MAXN];
 ll n,m,k,src[MAXK],dst[MAXK],de[MAXK],season[SEASONS]={1,2,3,2};
@@ -86,4 +86,5 @@ int main(){
     if(ans>=INF) cout<<"-1\n";
     else cout<<ans<<'\n';
     return 0;
+
 }

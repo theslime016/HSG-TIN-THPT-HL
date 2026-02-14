@@ -56,7 +56,14 @@ int main() {
     max_size = (int)num.size();
 
     for (int pos = 0; pos < max_size-k; pos++) {
-        if (num[pos] == '0') continue;
+        if (num[pos] == '0') {
+            if (req == 1) {
+                std::cout << 0;
+                return 0;
+            } else {
+                continue;
+            }
+        }
         backtrack(std::string(1, num[pos]), pos+1, 1);
     }
 

@@ -48,6 +48,9 @@ ostream& operator<<(ostream& os, int128& val) {
     return os;
 }
 
+#else
+typedef __int128_t long long;
+typedef __uint128_t unsigned long long;
 #endif
 
 int main() {

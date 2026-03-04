@@ -5,7 +5,7 @@
 using namespace std;
 const int MAXN=5000,MAXB=MAXN,MX_PHASE=4;
 const int MX_COLOUR=MX_PHASE,MX_LEVEL=8;
-const int MOD=1e9+7;
+const int MOD=1e9+7,MAX_OJ=75;
 const ll INF=1e18;
 struct PhaseMask{
     array<bitset<MAXB+1>,1<<MX_PHASE> dp;
@@ -375,12 +375,19 @@ public:
 };
 class QuantumQueryHandler{
 private:
-    vector<array<array<array<ll,8>,4>,4>> val_history[MAXN+1];
-    vector<bool> graph_valid_history[MAXN+1];
-    vector<array<array<int,4>,4>> matrix_history[MAXN+1];
-    vector<ll> T_history[MAXN+1];
-    vector<vector<ll>> dist_history[MAXN+1];
-    struct Key{int ver,u;ll T;};
+    vector<array<array<array<ll,8>,4>,4>> val_history[MAX_OJ+1];
+    vector<bool> graph_valid_history[MAX_OJ+1];
+    vector<array<array<int,4>,4>> matrix_history[MAX_OJ+1];
+    vector<ll> T_history[MAX_OJ+1];
+    vector<vector<ll>> dist_history[MAX_OJ+1];
+    struct Key{
+        int ver,u;ll T;
+        bool operator<(const Key&other)const{
+            if(ver!=other.ver) return ver<other.ver;
+            if(u!=other.u) return u<other.u;
+            return T<other.T;
+        }
+    };
     map<Key,ll> cache;
     int n;ll b;
     vector<int> L;
@@ -398,6 +405,7 @@ public:
     }
     int update_val(int old,int u,int p,int c,int l,ll v){
         int nv=version_cnt++;
+        if(version_cnt>=MAX_OJ) exit(0);
         val_history[nv]=val_history[old];
         graph_valid_history[nv]=graph_valid_history[old];
         matrix_history[nv]=matrix_history[old];
@@ -408,6 +416,7 @@ public:
     }
     int update_graph(int old, bool valid, vector<ll> new_dist){
         int nv = version_cnt++;
+        if(version_cnt>=MAX_OJ) exit(0);
         val_history[nv] = val_history[old];
         graph_valid_history[nv] = graph_valid_history[old];
         matrix_history[nv] = matrix_history[old];
@@ -421,6 +430,7 @@ public:
     }
     int update_matrix(int old, array<array<int,4>,4> mat, ll T){
         int nv = version_cnt++;
+        if(version_cnt>=MAX_OJ) exit(0);
         val_history[nv] = val_history[old];
         graph_valid_history[nv] = graph_valid_history[old];
         matrix_history[nv] = matrix_history[old];
@@ -567,7 +577,7 @@ int main(){
             if(add) graph.add_edge(u,v,w);
             else graph.remove_edge(u,v,w);
             bool valid = graph.build_scc();
-            vector<ll> new_dist = graph.compute_dist_from(1);
+            vector<ll> new_dist;if(valid) new_dist=graph.compute_dist_from(1);
             cur_ver=qh.update_graph(cur_ver, valid, new_dist);
         }
         else if(type==3){

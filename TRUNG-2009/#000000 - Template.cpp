@@ -1,19 +1,62 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <chrono>
+#include <iomanip>
+#include <vector>
+#include <set>
+#include <unordered_set>
+#include <map>
+#include <unordered_map>
+#include <list>
+#include <queue>
+#include <deque>
+#include <stack>
+#include <bitset>
+#include <utility>
+#include <tuple>
+#include <string>
+#include <cstring>
+#include <algorithm>
+#include <cmath>
+#include <numeric>
+#include <random>
 using namespace std;
 
+#ifdef __WIN32
+    inline int getchar_unlocked() {return _getchar_nolock();}
+    inline int putchar_unlocked(int c) {return _putchar_nolock(c);}
+#endif
+
+// int128 type
 #ifdef __SIZEOF_INT128__
 typedef __int128_t int128;
 typedef __uint128_t uint128;
 
-istream& operator>>(istream& is, int128& val) {
+template<typename T>
+istream& read_int(istream& is, T& val) {
     val = 0;
     int c;
-    while ((c = is.get()) && isspace(c)) {}
+
+    while ((c = is.get()) != EOF && isspace(c)) {}
 
     bool neg = false;
-    if (c == '-') {
-        neg = true;
-        c = is.get();
+    if constexpr (is_signed_v<T>) {
+        if (c == '-') {
+            neg = true;
+            c = is.get();
+        }
+    } else {
+        if (c == '-') {
+            is.setstate(ios::failbit);
+            return is;
+        }
+    }
+
+    if (c == '+') c = is.get();
+    if (c == EOF || !isdigit(c)) {
+        is.setstate(ios::failbit);
+        return is;
     }
 
     while (c != EOF && isdigit(c)) {
@@ -21,39 +64,74 @@ istream& operator>>(istream& is, int128& val) {
         c = is.get();
     }
 
-    if (neg == true) val = -val;
+    if (neg) val = -val;
     if (c != EOF) is.putback(c);
 
     return is;
 }
 
-ostream& operator<<(ostream& os, int128& val) {
+istream& operator>>(istream& is, int128& val) {
+    return read_int(is, val);
+}
+
+istream& operator>>(istream& is, uint128& val) {
+    return read_int(is, val);
+}
+
+template<typename T>
+ostream& print_uint(ostream& os, T val) {
+    char buffer[40];
+    int pos = 0;
+
+    while (val > 0) {
+        buffer[pos++] = val%10 + '0';
+        val /= 10;
+    }
+    
+    while (pos--) os << buffer[pos];
+    return os;
+}
+
+ostream& operator<<(ostream& os, const int128& val) {
     if (val == 0) {
         os << '0';
         return os;
     }
     
     uint128 unsigned_val = val > 0 ? val : -(uint128)val;
-    char buffer[40];
-    int pos = 0;
-
-    while (unsigned_val > 0) {
-        buffer[pos++] = unsigned_val%10 + '0';
-        unsigned_val /= 10;
-    }
-    
     if (val < 0) os << '-';
-    while (pos--) os << buffer[pos];
-    
-    return os;
+    return print_uint(os, unsigned_val);
+}
+
+ostream& operator<<(ostream& os, const uint128& val) {
+    if (val == 0) {
+        os << '0';
+        return os;
+    }
+    return print_uint(os, val);
 }
 
 #else
-typedef __int128_t long long;
-typedef __uint128_t unsigned long long;
+typedef long long int128;
+typedef unsigned long long uint128;
 #endif
 
-int main() {
+// Eratosthenes
+template<size_t N, typename T>
+void sieve(T& is_prime) {
+    is_prime[0] = is_prime[1] = false;
+    for (size_t i = 2; i*i < N; i++) {
+        if (!is_prime[i]) continue;
+        for (size_t j = i*i; j < N; j+=i) {
+            is_prime[j] = false;
+        }
+    }
+}
+
+
+signed main() {
+    auto start_time [[maybe_unused]] = chrono::high_resolution_clock::now();
+    
     std::ios::sync_with_stdio(false);
     std::cin.tie(NULL);
     std::cerr.tie(NULL);
@@ -62,6 +140,13 @@ int main() {
     // freopen("error.err", "w", stderr);
 
     
+
+    #if __LOCAL == 1
+        auto end_time = chrono::high_resolution_clock::now();
+        std::chrono::duration<double, std::milli> duration = end_time - start_time;
+        cout << fixed << setprecision(15);
+        cout << "\n\n[Run Time: " << duration.count() << " ms]";
+    #endif
 
     return 0;
 }

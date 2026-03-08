@@ -128,25 +128,23 @@ void sieve(T& is_prime) {
     }
 }
 
+auto _time_point = chrono::steady_clock::now();
+#define TIME cerr << "\n[Time: " << chrono::duration<double, milli>(chrono::steady_clock::now()-_time_point).count() << " ms]\n"
+#define DEBUG(x) cerr << #x << " = " << x << '\n'
 
 signed main() {
-    auto start_time [[maybe_unused]] = chrono::high_resolution_clock::now();
+    #ifdef __LOCAL
+        std::cerr.tie(NULL);
+        freopen("C:\\Users\\proslimevn\\Documents\\Testing\\error.err", "w", stderr);
+    #endif
     
     std::ios::sync_with_stdio(false);
     std::cin.tie(NULL);
-    std::cerr.tie(NULL);
     // freopen("input.inp", "r", stdin);
     // freopen("output.out", "w", stdout);
-    // freopen("error.err", "w", stderr);
 
-    
 
-    #if __LOCAL == 1
-        auto end_time = chrono::high_resolution_clock::now();
-        std::chrono::duration<double, std::milli> duration = end_time - start_time;
-        cout << fixed << setprecision(15);
-        cout << "\n\n[Run Time: " << duration.count() << " ms]";
-    #endif
 
+    TIME;
     return 0;
 }

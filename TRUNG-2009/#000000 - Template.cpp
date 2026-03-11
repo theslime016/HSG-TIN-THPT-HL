@@ -87,8 +87,8 @@ template<typename T>
     }
 
 #else
-typedef long long int128;
-typedef unsigned long long uint128;
+    typedef long long int128;
+    typedef unsigned long long uint128;
 #endif
 
 

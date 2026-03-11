@@ -1,32 +1,7 @@
-#include <iostream>
-#include <cstdio>
-#include <cstdlib>
-#include <chrono>
-#include <iomanip>
-#include <vector>
-#include <set>
-#include <unordered_set>
-#include <map>
-#include <unordered_map>
-#include <list>
-#include <queue>
-#include <deque>
-#include <stack>
-#include <bitset>
-#include <utility>
-#include <tuple>
-#include <string>
-#include <cstring>
-#include <algorithm>
-#include <cmath>
-#include <numeric>
-#include <random>
+#include <bits/stdc++.h>
 using namespace std;
 
-#ifdef __WIN32
-    inline int getchar_unlocked() {return _getchar_nolock();}
-    inline int putchar_unlocked(int c) {return _putchar_nolock(c);}
-#endif
+#define endl '\n'
 
 // int128 type
 #ifdef __SIZEOF_INT128__
@@ -34,86 +9,92 @@ typedef __int128_t int128;
 typedef __uint128_t uint128;
 
 template<typename T>
-istream& read_int(istream& is, T& val) {
-    val = 0;
-    int c;
+    istream& read_int(istream& is, T& val) {
+        val = 0;
+        int c;
 
-    while ((c = is.get()) != EOF && isspace(c)) {}
+        while ((c = is.get()) != EOF && isspace(c)) {}
 
-    bool neg = false;
-    if constexpr (is_signed_v<T>) {
-        if (c == '-') {
-            neg = true;
-            c = is.get();
+        bool neg = false;
+        if constexpr (is_signed_v<T>) {
+            if (c == '-') {
+                neg = true;
+                c = is.get();
+            }
+        } else {
+            if (c == '-') {
+                is.setstate(ios::failbit);
+                return is;
+            }
         }
-    } else {
-        if (c == '-') {
+
+        if (c == '+') c = is.get();
+        if (c == EOF || !isdigit(c)) {
             is.setstate(ios::failbit);
             return is;
         }
-    }
 
-    if (c == '+') c = is.get();
-    if (c == EOF || !isdigit(c)) {
-        is.setstate(ios::failbit);
+        while (c != EOF && isdigit(c)) {
+            val = val*10 + (c - '0');
+            c = is.get();
+        }
+
+        if (neg) val = -val;
+        if (c != EOF) is.putback(c);
+
         return is;
     }
 
-    while (c != EOF && isdigit(c)) {
-        val = val*10 + (c - '0');
-        c = is.get();
+    istream& operator>>(istream& is, int128& val) {
+        return read_int(is, val);
     }
 
-    if (neg) val = -val;
-    if (c != EOF) is.putback(c);
-
-    return is;
-}
-
-istream& operator>>(istream& is, int128& val) {
-    return read_int(is, val);
-}
-
-istream& operator>>(istream& is, uint128& val) {
-    return read_int(is, val);
-}
-
-template<typename T>
-ostream& print_uint(ostream& os, T val) {
-    char buffer[40];
-    int pos = 0;
-
-    while (val > 0) {
-        buffer[pos++] = val%10 + '0';
-        val /= 10;
+    istream& operator>>(istream& is, uint128& val) {
+        return read_int(is, val);
     }
-    
-    while (pos--) os << buffer[pos];
-    return os;
-}
 
-ostream& operator<<(ostream& os, const int128& val) {
-    if (val == 0) {
-        os << '0';
+    template<typename T>
+    ostream& print_uint(ostream& os, T val) {
+        char buffer[40];
+        int pos = 0;
+
+        while (val > 0) {
+            buffer[pos++] = val%10 + '0';
+            val /= 10;
+        }
+        
+        while (pos--) os << buffer[pos];
         return os;
     }
-    
-    uint128 unsigned_val = val > 0 ? val : -(uint128)val;
-    if (val < 0) os << '-';
-    return print_uint(os, unsigned_val);
-}
 
-ostream& operator<<(ostream& os, const uint128& val) {
-    if (val == 0) {
-        os << '0';
-        return os;
+    ostream& operator<<(ostream& os, const int128& val) {
+        if (val == 0) {
+            os << '0';
+            return os;
+        }
+        
+        uint128 unsigned_val = val > 0 ? val : -(uint128)val;
+        if (val < 0) os << '-';
+        return print_uint(os, unsigned_val);
     }
-    return print_uint(os, val);
-}
+
+    ostream& operator<<(ostream& os, const uint128& val) {
+        if (val == 0) {
+            os << '0';
+            return os;
+        }
+        return print_uint(os, val);
+    }
 
 #else
 typedef long long int128;
 typedef unsigned long long uint128;
+#endif
+
+
+#ifdef __WIN32
+    inline int getchar_unlocked() {return _getchar_nolock();}
+    inline int putchar_unlocked(int c) {return _putchar_nolock(c);}
 #endif
 
 // Eratosthenes
@@ -129,21 +110,22 @@ void sieve(T& is_prime) {
 }
 
 auto _time_point = chrono::steady_clock::now();
-#define TIME cerr << "\n[Time: " << chrono::duration<double, milli>(chrono::steady_clock::now()-_time_point).count() << " ms]\n"
-#define DEBUG(x) cerr << #x << " = " << x << '\n'
+#define TIME cerr << endl << "[Time: " << chrono::duration<double, milli>(chrono::steady_clock::now()-_time_point).count() << " ms]" << endl
+
+#ifdef _LOCAL_DEBUG
+    #define DEBUG(x) cerr << #x << " = " << x << endl
+#else
+    #define DEBUG(x)
+#endif
 
 signed main() {
-    #ifdef __LOCAL
-        std::cerr.tie(NULL);
-        freopen("C:\\Users\\proslimevn\\Documents\\Testing\\error.err", "w", stderr);
-    #endif
-    
     std::ios::sync_with_stdio(false);
     std::cin.tie(NULL);
     // freopen("input.inp", "r", stdin);
     // freopen("output.out", "w", stdout);
+    // freopen("error.err", "w", stderr);
 
-
+    
 
     TIME;
     return 0;

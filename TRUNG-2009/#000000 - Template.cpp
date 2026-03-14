@@ -109,13 +109,14 @@ void sieve(T& is_prime) {
     }
 }
 
-auto _time_point = chrono::steady_clock::now();
-#define TIME cerr << endl << "[Time: " << chrono::duration<double, milli>(chrono::steady_clock::now()-_time_point).count() << " ms]" << endl
-
 #ifdef _LOCAL_DEBUG
+    auto _time_point = chrono::steady_clock::now();
+
     #define DEBUG(x) cerr << #x << " = " << x << endl
+    #define TIME cerr << endl << "[Time: " << chrono::duration<double, milli>(chrono::steady_clock::now()-_time_point).count() << " ms]" << endl
 #else
     #define DEBUG(x)
+    #define TIME
 #endif
 
 signed main() {

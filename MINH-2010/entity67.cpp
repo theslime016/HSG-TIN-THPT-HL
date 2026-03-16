@@ -3,9 +3,9 @@
 #define ll long long
 #define ld long double
 using namespace std;
-const int MAXN=5000,MAXB=MAXN,MX_PHASE=4;
+const int MAXN=1000,MAXB=MAXN,MX_PHASE=4;
 const int MX_COLOUR=MX_PHASE,MX_LEVEL=8;
-const int MOD=1e9+7,MAX_OJ=75;
+const int MOD=1e9+7,MAX_OJ=50;
 const ll INF=1e18;
 struct PhaseMask{
     array<bitset<MAXB+1>,1<<MX_PHASE> dp;
@@ -300,7 +300,7 @@ public:
         vector<vector<int>> scc_nodes(comp_cnt);
         for(int i=1;i<=n;i++)scc_nodes[comp_id[i]].push_back(i);
         for(int i = 0; i < comp_cnt; i++){
-            if(scc_nodes[i].size()>=1&&has_neg_cycle_in_scc(scc_nodes[i])){has_neg_cycle_flag=true;return false;}
+            if(scc_nodes[i].size()>1&&has_neg_cycle_in_scc(scc_nodes[i])){has_neg_cycle_flag=true;return false;}
         }
         return true;
     }
@@ -470,90 +470,32 @@ public:
         return res;
     }
 };
-static char stdinBuffer[(1<<22)+1];
-static char* stdinBufPtr = stdinBuffer;
-static char stdoutBuffer[(1<<22)+1];
-static char* stdoutBufPtr = stdoutBuffer;
-static char stderrBuffer[(1<<22)+1];
-static char* stderrBufPtr = stderrBuffer;
-inline char getchar_fast() {
-    if(*stdinBufPtr == '\0') return EOF;
-    return *stdinBufPtr++;
-}
-inline void putchar_fast(char c) {
-    *stdoutBufPtr++ = c;
-}
-inline int read_int() {
-    int x = 0, sign = 1;
-    char c = getchar_fast();
-    while(c < '0' || c > '9') {
-        if(c == '-') sign = -1;
-        c = getchar_fast();
-    }
-    while(c >= '0' && c <= '9') {
-        x = x * 10 + (c - '0');
-        c = getchar_fast();
-    }
-    return x * sign;
-}
-inline ll read_ll() {
-    ll x = 0, sign = 1;
-    char c = getchar_fast();
-    while(c < '0' || c > '9') {
-        if(c == '-') sign = -1;
-        c = getchar_fast();
-    }
-    while(c >= '0' && c <= '9') {
-        x = x * 10 + (c - '0');
-        c = getchar_fast();
-    }
-    return x * sign;
-}
-inline void write_ll(ll x) {
-    if(x < 0) {
-        putchar_fast('-');
-        x = -x;
-    }
-    char buf[20];
-    int len = 0;
-    do {
-        buf[len++] = '0' + (x % 10);
-        x /= 10;
-    } while(x > 0);
-    while(len--) {
-        putchar_fast(buf[len]);
-    }
-    putchar_fast('\n');
-}
 int main(){
     std::ios::ios_base::sync_with_stdio(false);
     std::cin.tie(nullptr);std::cout.tie(nullptr);
-    size_t ByteRead=fread(stdinBuffer,1,sizeof(stdinBuffer),stdin);
-    stdinBuffer[ByteRead]='\0';
-    int n=read_int();ll b=read_ll();
-    vector<int> L(4);
-    for(int i=0;i<4;i++) L[i]=read_int();
+    freopen("entity67_test.txt","r",stdin);
+    freopen("entity67_return.txt","w",stdout);
+    int n;ll b;cin>>n>>b;
+    vector<int> L(4);for(int i=0;i<4;i++) cin>>L[i];
     vector<array<array<array<ll,MX_LEVEL>,MX_COLOUR>,MX_PHASE>>val(n+1);
-    for(int i=1;i<=n;i++) for(int p=0;p<4;p++) for(int c=0;c<4;c++) for(int l=0;l<8;l++) val[i][p][c][l]=read_ll();
+    for(int i=1;i<=n;i++) for(int p=0;p<4;p++) for(int c=0;c<4;c++) for(int l=0;l<8;l++) cin>>val[i][p][c][l];
     vector<vector<int>> adj(n+1);
     for(int i=1;i<n;i++){
-        int u=read_int();
-        int v=read_int();
+        int u,v;cin>>u>>v;
         adj[u].push_back(v);
         adj[v].push_back(u);
     }
-    int m=read_int();
+    int m;cin>>m;
     GraphSolver graph(n,m);
     for(int i=0;i<m;i++){
-        int u=read_int(),v=read_int();ll w=read_ll();
+        int u,v;ll w;cin>>u>>v>>w;
         graph.add_edge(u,v,w);
     }
     Matrix A;
-    for(int i=0;i<4;i++) for(int j=0;j<4;j++) A.a[i][j]=read_int();
-    ll T=read_ll();
+    for(int i=0;i<4;i++) for(int j=0;j<4;j++) cin>>A.a[i][j];
+    ll T;cin>>T;
     if(!graph.build_scc()){
-        write_ll(-1);
-        fwrite(stdoutBuffer,1,stdoutBufPtr-stdoutBuffer,stdout);
+        cout<< -1<<'\n';
         return 0;
     }
     vector<ll> dist=graph.compute_dist_from(1);
@@ -561,38 +503,35 @@ int main(){
     array<array<int,4>,4> init_mt;
     for(int i=0;i<4;i++) for(int j=0;j<4;j++) init_mt[i][j]=A.a[i][j];
     qh.init_graph_matrix(true,init_mt,T,dist);
-    int Q=read_int();
-    int cur_ver=0;
+    int Q,cur_ver=0;cin>>Q;
     for(int i=0;i<Q;i++){
-        int type=read_int();
+        int type;cin>>type;
         if(type==1){
-            int u = read_int(), p = read_int(), c = read_int(), l = read_int();
-            ll new_val = read_ll();
-            cur_ver = qh.update_val(cur_ver, u, p, c, l, new_val);
+            int u,p,c,l;ll new_val;
+            cin>>u>>p>>c>>l>>new_val;
+            cur_ver=qh.update_val(cur_ver,u,p,c,l,new_val);
         }
         else if(type==2){
-            int u = read_int(), v = read_int(); 
-            ll w = read_ll();
-            int add = read_int();
+            int u,v;ll w;int add;
+            cin>>u>>v>>w>>add;
             if(add) graph.add_edge(u,v,w);
             else graph.remove_edge(u,v,w);
             bool valid = graph.build_scc();
-            vector<ll> new_dist;if(valid) new_dist=graph.compute_dist_from(1);
-            cur_ver=qh.update_graph(cur_ver, valid, new_dist);
+            vector<ll> new_dist;
+            if(valid) new_dist = graph.compute_dist_from(1);
+            cur_ver = qh.update_graph(cur_ver,valid,new_dist);
         }
         else if(type==3){
             array<array<int,4>,4> new_mat;
-            for(int i=0;i<4;i++) for(int j=0;j<4;j++) new_mat[i][j] = read_int();
-            ll new_T = read_ll();
-            cur_ver=qh.update_matrix(cur_ver, new_mat, new_T);
+            for(int i=0;i<4;i++) for(int j=0;j<4;j++) cin >> new_mat[i][j];
+            ll new_T;cin >> new_T;
+            cur_ver = qh.update_matrix(cur_ver,new_mat,new_T);
         }
         else if(type==4){
-            int ver = read_int(), u = read_int(); 
-            ll Tq = read_ll();
-            ll ans = qh.query(ver, u, Tq);
-            write_ll(ans);
+            int ver,u;ll Tq;cin >> ver >> u >> Tq;
+            ll ans = qh.query(ver,u,Tq);
+            cout << ans << '\n';
         }
     }
-    fwrite(stdoutBuffer,1,stdoutBufPtr-stdoutBuffer,stdout);
     return 0;
 }

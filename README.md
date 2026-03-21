@@ -1,4 +1,4 @@
-# 🐧 HL High School Competitive Programming Archive
+# 💫 HL High School Competitive Programming Archive
 
 **Welcome to the official Competitive Programming Archive for students of THPT HL!**  
 This repository is a curated collection of algorithmic problem solutions written in **C++** and **Python**, chronicling the CP journey of HL High School coders.
@@ -54,4 +54,5 @@ Follow this workflow when contributing code:
   - Nguyễn Nhật Minh (2010)
   - Trần Đăng Khôi (2010)
   - Nguyễn Việt Dũng (2010)
-![2526](https://i.postimg.cc/zzG9zjWL/1ba528f6e5956bcb3284.jpg)
+![12-25/26]([https://i.postimg.cc/zzG9zjWL/1ba528f6e5956bcb3284.jpg](https://raw.githubusercontent.com/theslime016/HSG-TIN-THPT-HL/refs/heads/main/K12%20-%201st%20-%202025%20-%202026.png))
+![11-25/26](https://github.com/theslime016/HSG-TIN-THPT-HL/blob/main/K11%20-%202nd%20-%202025-2026.png?raw=true)

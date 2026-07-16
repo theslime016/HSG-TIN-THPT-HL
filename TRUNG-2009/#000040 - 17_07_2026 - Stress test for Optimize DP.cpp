@@ -8,10 +8,10 @@ int main() {
   ios::sync_with_stdio(false);
   cin.tie(0);
 
-  system(("g++ main.cpp -o gen"));
+  system(("g++ main.cpp -o gen -Wall -Wextra -fsanitize=address,undefined"));
   system(("g++ test.cpp -o brute -O3 -fopenmp"));
   // system(("g++ test2.cpp -o brute"));
-  system(("g++ beta.cpp -o main"));
+  system(("g++ beta.cpp -o main -Wall -Wextra -fsanitize=address,undefined"));
 
   long long test = 313;
   for (int i = 1; i <= test; i++) {

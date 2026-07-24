@@ -25,7 +25,7 @@ int main() {
   int f, k;
   cin >> f >> k;
   vector<long long> fact(f + 1, 0);
-  fact[1] = 1;
+  fact[0] = fact[1] = 1;
   for (int i = 2; i <= f; i++) {
     fact[i] = ((fact[i - 1] * i) % m + m) % m;
   }
@@ -36,7 +36,7 @@ int main() {
 
   vector<long long> invFact(f + 1, 0);
   invFact[f] = binpow(fact[f], m - 2, m);
-  for (int j = f - 1; j > 0; j--) {
+  for (int j = f - 1; j >= 0; j--) {
     invFact[j] = (invFact[j + 1] * (j + 1)) % m;
   }
 

@@ -22,8 +22,8 @@ int main() {
   a = binpow(a, m - 2, m);
   cout << a << '\n';
 
-  int f, k;
-  cin >> f >> k;
+  int f;
+  cin >> f;
   vector<long long> fact(f + 1, 0);
   fact[0] = fact[1] = 1;
   for (int i = 2; i <= f; i++) {
@@ -42,6 +42,20 @@ int main() {
 
   for (int x : invFact)
     cout << x << ' ';
+  cout << '\n';
+
+  vector<long long> Arrangement(f + 1, 0);
+  for (int k = 0; k <= f; k++) {
+    Arrangement[k] = (fact[f] * invFact[f - k]) % m;
+    cout << Arrangement[k] << ' ';
+  }
+  cout << '\n';
+
+  vector<long long> Combination(f + 1, 0);
+  for (int k = 0; k <= f; k++) {
+    Combination[k] = (Arrangement[k] * invFact[k]) % m;
+    cout << Combination[k] << ' ';
+  }
   cout << '\n';
 
   return 0;

@@ -30,7 +30,7 @@ struct uf {
     u = find(u);
     v = find(v);
     if (u != v) {
-      if (data[u] < data[v])
+      if (size[u] < size[v])
         swap(u, v);
       data[v] = u;
       size[u] += size[v];

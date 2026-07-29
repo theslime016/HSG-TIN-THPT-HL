@@ -3,22 +3,36 @@ using namespace std;
 
 struct UF2D {
   int n, m;
-  vector<vector<int>> data;
+  static const int maxn = 505;
+  long long data[maxn][maxn];
   long long count;
   UF2D(int n, int m) {
     this->n = n;
     this->m = m;
-    data.assign(n + 1, vector<int>(m + 2));
     for (int i = 1; i <= n; i++) {
-      iota(data[i].begin(), data[i].end(), 0LL);
+      iota(data[i], data[i] + m + 2, 0LL);
     }
     count = 0;
   }
 
   int find(int r, int c) {
-    if (data[r][c] == c)
-      return c;
-    return data[r][c] = find(r, data[r][c]);
+    int root = c;
+    while (root != data[r][root]) {
+      root = data[r][root];
+    }
+
+    int current = c;
+    while (current != root) {
+      int next = data[r][current];
+      data[r][current] = root;
+      current = next;
+    }
+
+    return root;
+
+    // if (data[r][c] == c)
+    //   return c;
+    // return data[r][c] = find(r, data[r][c]);
   }
 
   int compress(int r, int a, int b) {
@@ -38,7 +52,7 @@ int main() {
   cin.tie(0)->sync_with_stdio(false);
 
   freopen("REDSTONE.INP", "r", stdin);
-  freopen("REDSTONE.OUT", "w", stdout);
+  freopen("REDSTONE.ANS", "w", stdout);
 
   int n, m, k, q;
   cin >> n >> m >> k >> q;

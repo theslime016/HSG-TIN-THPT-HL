@@ -42,7 +42,6 @@ pair<bool, long long> bfs(int start, int target) {
 int main() {
   cin.tie(0)->sync_with_stdio(false);
 
-  int n, q;
   cin >> n >> q;
   adj.assign(n + 1, vector<Edge>());
   while (q--) {

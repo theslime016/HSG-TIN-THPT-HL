@@ -67,16 +67,16 @@ int main() {
       // if (new_index == index)
       //   break;
 
-      // for (; range > index; range--) {
-      //   if (first_occur[!parity][range] <= index ||
-      //       first_occur[!parity][range] == 1e9)
-      //     continue;
-      //   if (dist[first_occur[!parity][range]] > m)
-      //     continue;
-      //   break;
-      // }
-      // if (range == index)
-      //   break;
+      for (; range > index; range--) {
+        if (first_occur[!parity][range] <= index ||
+            first_occur[!parity][range] == 1e9)
+          continue;
+        if (dist[first_occur[!parity][range]] > m)
+          continue;
+        break;
+      }
+      if (range == index)
+        break;
 
       index = first_occur[!parity][range];
       parity = !parity;

@@ -3,6 +3,8 @@ using namespace std;
 
 const int inf = 1e9;
 
+// Upsolve: https://i.postimg.cc/NFdT7w3j/tset.png
+
 #define debugr(x) cout << #x << " = " << (x) << '\n'
 #define debugl cout << '\n'
 

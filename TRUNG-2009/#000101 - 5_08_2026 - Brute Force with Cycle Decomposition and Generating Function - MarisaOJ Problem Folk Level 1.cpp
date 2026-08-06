@@ -94,9 +94,7 @@ bool opCheck() {
       // debugr(j);
       // debugr(oIndex);
       // debugl;
-      if (orin[i][S[j]] != j) {
-        if (orin[i][S[j]] > j)
-          swap(orin[i][S[j]], j);
+      while (orin[i][S[j]] != j) {
         res.push_back({i, orin[i][S[j]], j});
         oper++;
         swap(S[orin[i][S[j]]], S[j]);
@@ -133,6 +131,14 @@ bool check() {
     }
   }
 
+  // for (int i = 1; i <= k; i++) {
+  //   for (int j = 1; j <= n; j++) {
+  //     debugr(B[i][j]);
+  //   }
+  //   cout << '\n';
+  // }
+  // cout << '\n';
+
   if (!opCheck())
     return false;
 
@@ -141,6 +147,8 @@ bool check() {
 
 // Tạo một tập sau khi đã swap
 bool create(int row) {
+  if (row > k)
+    return false;
   do {
     if (row == k) {
       // for (int i = 1; i <= k; i++) {
@@ -155,16 +163,23 @@ bool create(int row) {
         return true;
     } else if (create(row + 1))
       return true;
-  } while (next_permutation(B[row].begin(), B[row].end()));
+  } while (next_permutation(B[row].begin() + 1, B[row].end()));
   return false;
 }
 
 int main() {
   cin.tie(0)->sync_with_stdio(false);
 
-  // freopen("input.inp", "r", stdin);
+  freopen("input.inp", "r", stdin);
+  freopen("output.ans", "w", stdout);
 
   cin >> n >> k >> d;
+
+  if (n == 1) {
+    cout << -1;
+    return 0;
+  }
+
   A.assign(k + 1, vector<int>(n + 1, 0));
   B.assign(k + 1, vector<int>(n + 1, 0));
   orin.assign(k + 1, vector<int>(n + 1, 0));

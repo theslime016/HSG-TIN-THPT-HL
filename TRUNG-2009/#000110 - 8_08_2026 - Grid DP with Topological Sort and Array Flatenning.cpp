@@ -3,7 +3,6 @@ using namespace std;
 
 char S[105][105]{};
 // 0 -> 9
-// # -> Skip
 
 vector<pair<int, int>> adj[105];
 // index - value

@@ -75,10 +75,8 @@ int main() {
     }
   }
 
-  for (int i = 1; i <= n; i++) {
-    if (valid[i] == vflag && indeg[i] > 0)
-      return cout << "inf", 0;
-  }
+  if (any_of(indeg + 1, indeg + 1 + n, [](int x) { return x > 0; }))
+    return cout << "inf", 0;
 
   int buffer[15]{0};
   int pos = 1;

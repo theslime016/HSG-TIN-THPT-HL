@@ -49,7 +49,7 @@ void idT(Node *root) {
 }
 
 Node *findMin(Node *root) {
-  if (root == nullptr && root->left == nullptr) {
+  if (root != nullptr && root->left != nullptr) {
     root = findMin(root->left);
   }
   return root;

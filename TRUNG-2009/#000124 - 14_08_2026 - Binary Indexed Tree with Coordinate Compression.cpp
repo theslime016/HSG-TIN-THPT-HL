@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// Problem: https://i.postimg.cc/Df6NC2PF/image.png
+// Problem: https://i.postimg.cc/c4VBhjjD/image.png
 
 const long long inf = 1e18;
 struct fenwick {

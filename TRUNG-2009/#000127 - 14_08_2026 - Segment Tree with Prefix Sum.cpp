@@ -8,13 +8,16 @@ const long long inf = 1e18;
 int main() {
   cin.tie(0)->sync_with_stdio(0);
 
+  freopen("input.inp", "r", stdin);
+  freopen("output.ans", "w", stdout);
+
   struct ST {
     int n;
     vector<long long> data;
 
     ST(int n) {
       this->n = n;
-      data.assign(2 * n + 1, inf);
+      data.assign(2 * n, inf);
     }
 
     void build(const vector<long long> &a) {
@@ -49,17 +52,14 @@ int main() {
 
   int n;
   cin >> n;
-  vector<long long> a(n, 0);
-  vector<long long> pref(n, 0);
-  long long last = inf;
-  for (int i = 0; i < n; i++) {
-    cin >> a[i];
-    pref[i] = a[i];
-    pref[i] += last != inf ? last : 0;
-    last = pref[i];
+  vector<long long> A(n + 1, 0);
+  vector<long long> pref(n + 1, 0);
+  for (int i = 1; i <= n; i++) {
+    cin >> A[i];
+    pref[i] = A[i] + pref[i - 1];
   }
 
-  ST segment(n);
+  ST segment(n + 1);
   segment.build(pref);
 
   int m;
@@ -67,11 +67,11 @@ int main() {
   while (m--) {
     int x, y;
     cin >> x >> y;
-    x--, y--;
     long long res = -inf;
     for (int index = x; index <= y; index++) {
-      res = max({res, pref[index] - segment.query(x, index), a[index]});
+      long long val = pref[index] - segment.query(x - 1, index - 1);
+      res = max(res, val);
     }
-    cout << res;
+    cout << res << '\n';
   }
 }

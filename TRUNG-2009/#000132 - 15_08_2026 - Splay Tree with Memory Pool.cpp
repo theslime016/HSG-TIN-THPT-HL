@@ -10,12 +10,18 @@ struct node {
   int parent;
 } splay[maxn];
 
+stack<int> wait;
 long long nev = 0;
 long long root = 0;
 int node_count = 0;
 
 int newNode(const long long &val) {
-  int index = ++node_count;
+  int index = nev;
+  if (!wait.empty()) {
+    index = wait.top();
+    wait.pop();
+  } else
+    index = ++node_count;
   splay[index].data = val;
   splay[index].child[0] = splay[index].child[1] = splay[index].parent = nev;
   return index;
@@ -99,6 +105,65 @@ void insert(const long long &val) {
   splaying(newnode);
 }
 
+int search(const long long &val) {
+  if (root == nev)
+    return nev;
+  int cur = root;
+  int last = nev;
+
+  while (cur != nev) {
+    last = cur;
+    if (splay[cur].data > val) {
+      cur = splay[cur].child[0];
+    } else if (splay[cur].data < val) {
+      cur = splay[cur].child[1];
+    } else {
+      break;
+    }
+  }
+
+  splaying(last);
+  if (last == nev || splay[last].data != val)
+    return nev;
+  else
+    return last;
+}
+
+void del(const long long &val) {
+  int index = search(val);
+  if (index == nev)
+    return;
+
+  int L = splay[index].child[0];
+  int R = splay[index].child[1];
+  wait.push(index);
+
+  if (L == nev) {
+    if (R != nev) {
+      root = R;
+      splay[R].parent = nev;
+    }
+    return;
+  }
+  if (R == nev) {
+    if (L != nev) {
+      root = L;
+      splay[L].parent = nev;
+    }
+    return;
+  }
+
+  splay[L].parent = splay[R].parent = nev;
+  int maxL = L;
+  while (splay[maxL].child[1] != nev) {
+    maxL = splay[maxL].child[1];
+  }
+
+  splaying(maxL);
+  splay[maxL].child[1] = R;
+  splay[R].parent = maxL;
+}
+
 int main() {
   cin.tie(0)->sync_with_stdio(0);
 
@@ -110,9 +175,13 @@ int main() {
     insert(val);
   }
 
+  cout << search(32) << ' ' << search(90);
+
   splaying(4);
   splaying(2);
   splaying(7);
+
+  del(45);
 
   deque<pair<int, int>> dq; // rank - index
   dq.push_back({1, root});

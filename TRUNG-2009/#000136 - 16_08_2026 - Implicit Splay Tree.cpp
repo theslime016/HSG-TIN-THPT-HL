@@ -1,6 +1,90 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+/*
+Bài 3: Lõi Năng Lượng (7.0 điểm)
+Tên file chương trình: ENERGY.CPP / ENERGY.PAS / ENERGY.PY
+
+Mô tả bài toán:
+Tại trạm nghiên cứu không gian Alpha, các nhà khoa học đang tiến hành thử nghiệm
+trên một chuỗi hạt nhân năng lượng. Chuỗi này ban đầu gồm N hạt nhân được xếp
+thành một hàng ngang, hạt nhân thứ i (tính từ trái sang phải) mang một mức năng
+lượng là a[i]. Mức năng lượng này có thể là số âm nếu hạt nhân rơi vào trạng
+thái bất ổn.
+
+Để khai thác năng lượng hiệu quả nhất, hệ thống cần liên tục tìm ra một "Đoạn
+cộng hưởng tối ưu". Đoạn cộng hưởng tối ưu của một dải hạt nhân từ vị trí L đến
+vị trí R được định nghĩa là một đoạn con liên tiếp (chứa ít nhất 1 hạt nhân) nằm
+gọn trong dải [L, R] sao cho tổng mức năng lượng của các hạt nhân trong đoạn con
+đó là LỚN NHẤT.
+
+Tuy nhiên, trong quá trình thử nghiệm, chuỗi hạt nhân liên tục bị biến đổi cấu
+trúc bởi các phản ứng từ trường. Hệ thống máy tính của trạm phải xử lý M thao
+tác, thuộc 4 loại sau đây:
+
+- Loại 1 (Chèn hạt): Có dạng "1 k v". Một hạt nhân mới mang năng lượng v được
+chèn vào ngay sau vị trí thứ k hiện tại của chuỗi. (Nếu k = 0, hạt nhân được
+chèn vào đầu chuỗi).
+- Loại 2 (Hủy hạt): Có dạng "2 k". Hạt nhân đang nằm ở vị trí thứ k bị phá hủy
+và loại bỏ khỏi chuỗi.
+- Loại 3 (Đảo ngược từ trường): Có dạng "3 L R". Toàn bộ dải hạt nhân từ vị trí
+L đến vị trí R bị đảo ngược thứ tự (ví dụ: đoạn A-B-C-D sẽ biến thành D-C-B-A).
+- Loại 4 (Truy vấn năng lượng): Có dạng "4 L R". Yêu cầu máy tính tính toán và
+báo cáo tổng năng lượng của "Đoạn cộng hưởng tối ưu" nằm trong dải từ vị trí L
+đến vị trí R.
+
+Yêu cầu: Hãy lập trình giúp hệ thống máy tính xử lý các thao tác và in ra kết
+quả cho các truy vấn loại 4.
+
+Dữ liệu vào (Input): Đọc từ file văn bản ENERGY.INP
+- Dòng đầu tiên chứa số nguyên N (1 <= N <= 10^5) là số lượng hạt nhân ban đầu.
+- Dòng thứ hai chứa N số nguyên a[1], a[2], ..., a[N] (|a[i]| <= 15000) là mức
+năng lượng của các hạt nhân ban đầu.
+- Dòng thứ ba chứa số nguyên M (1 <= M <= 10^5) là số lượng thao tác cần xử lý.
+- M dòng tiếp theo, mỗi dòng mô tả một thao tác thuộc 1 trong 4 loại như đã mô
+tả ở trên. Dữ liệu đảm bảo các vị trí k, L, R luôn hợp lệ với độ dài của chuỗi
+tại thời điểm thực hiện thao tác (1 <= L <= R <= Độ dài chuỗi hiện tại).
+
+Dữ liệu ra (Output): Ghi ra file văn bản ENERGY.OUT
+- Với mỗi thao tác loại 4, in ra một số nguyên trên một dòng là tổng năng lượng
+lớn nhất tìm được.
+
+Ví dụ (Sample):
+
+ENERGY.INP
+3
+-1 2 3
+5
+4 1 3
+1 1 -5
+4 1 4
+3 2 4
+4 1 3
+
+ENERGY.OUT
+5
+5
+5
+
+Giải thích ví dụ:
+- Ban đầu chuỗi là: [-1, 2, 3].
+- Thao tác 1 (4 1 3): Truy vấn trên dải từ 1 đến 3. Đoạn liên tiếp lớn nhất là
+[2, 3] có tổng = 5. In ra 5.
+- Thao tác 2 (1 1 -5): Chèn giá trị -5 vào sau vị trí 1. Chuỗi mới trở thành:
+[-1, -5, 2, 3].
+- Thao tác 3 (4 1 4): Truy vấn trên dải từ 1 đến 4. Đoạn liên tiếp lớn nhất vẫn
+là [2, 3] có tổng = 5. In ra 5.
+- Thao tác 4 (3 2 4): Đảo ngược đoạn từ vị trí 2 đến 4 (tức là đoạn [-5, 2, 3]).
+Chuỗi mới trở thành: [-1, 3, 2, -5].
+- Thao tác 5 (4 1 3): Truy vấn trên dải từ 1 đến 3. Đoạn đang xét là [-1, 3, 2].
+Đoạn con liên tiếp lớn nhất là [3, 2] có tổng = 5. In ra 5.
+
+Giới hạn (Subtasks):
+- Subtask 1 (30% số điểm): N, M <= 10^3; chỉ có thao tác loại 4.
+- Subtask 2 (30% số điểm): N, M <= 10^5; chỉ có thao tác loại 3 và loại 4.
+- Subtask 3 (40% số điểm): Không giới hạn gì thêm (N, M <= 10^5).
+*/
+
 #define endl '\n'
 
 const int maxn = 5e4 + 5;
@@ -210,6 +294,7 @@ void insert(int pos, const long long &val) {
 int rev(int l, int r) {
   int index = fetch(l, r);
   splay[index].lazy_rev ^= 1;
+  swap(splay[index].suff, splay[index].pref);
 
   int parent = splay[index].parent;
   pushup(parent);
@@ -293,27 +378,44 @@ int main() {
   init_null();
 
   cin >> n;
-  // init_dummy(1, 2);
   A[1] = A[n + 2] = -inf;
   for (int i = 2; i <= n + 1; i++) {
     cin >> A[i];
-    // insert(A[i]);
   }
-
   root = build(1, n + 2, 0);
 
-  int subroot = cut(1, 2);
-  paste(7, subroot);
-  int index = fetch(1, 2);
-  cout << splay[index].sum << '\n';
-
-  del(4, 5);
-  while (!rec.empty()) {
-    cout << rec.top() << ' ';
-    rec.pop();
+  int m;
+  cin >> m;
+  while (m--) {
+    int t;
+    cin >> t;
+    switch (t) {
+    case 1: {
+      int pos;
+      long long val;
+      cin >> pos >> val;
+      insert(pos, val);
+      break;
+    }
+    case 2: {
+      int pos;
+      cin >> pos;
+      del(pos, pos);
+      break;
+    }
+    case 3: {
+      int l, r;
+      cin >> l >> r;
+      rev(l, r);
+      break;
+    }
+    case 4: {
+      int l, r;
+      cin >> l >> r;
+      int index = fetch(l, r);
+      cout << splay[index].res << '\n';
+      break;
+    }
+    }
   }
-  cout << '\n';
-
-  inorder(root);
-  ranker();
 }

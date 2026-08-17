@@ -4,7 +4,7 @@ using namespace std;
 #define endl '\n'
 
 const int maxn = 5e4 + 5;
-const long long inf = 1e18;
+const long long inf = 1e15;
 struct node {
   long long data;
   long long sum = 0;
@@ -52,7 +52,11 @@ int newNode(const long long &val) {
 //   swap(splay[x].child, splay[y].child);
 // }
 
-void init_null() { splay[0].pref = splay[0].suff = splay[0].res = -inf; }
+void init_null() {
+  splay[0].sum = 0;
+  splay[0].size = 0;
+  splay[0].pref = splay[0].suff = splay[0].res = -inf;
+}
 
 void pushup(int index) {
   if (index == 0)
@@ -78,10 +82,14 @@ void pushdown(int index) {
 
     int L = splay[index].child[0];
     int R = splay[index].child[1];
-    if (L != 0)
+    if (L != 0) {
       splay[L].lazy_rev ^= 1;
-    if (R != 0)
+      swap(splay[L].suff, splay[L].pref);
+    }
+    if (R != 0) {
       splay[R].lazy_rev ^= 1;
+      swap(splay[R].suff, splay[R].pref);
+    }
 
     splay[index].lazy_rev = 0;
   }
@@ -116,7 +124,7 @@ void rtd(int index) {
 void splaying(int index, int target_parent = 0) {
   if (index == 0)
     return;
-  while (splay[index].parent != target_parent && splay[index].parent != 0) {
+  while (splay[index].parent != target_parent) {
     int p = splay[index].parent;
     int g = splay[p].parent;
 
@@ -137,17 +145,13 @@ int search(int k) {
   if (root == 0)
     return 0;
   int cur = root;
-  int last = 0;
 
-  int fnd = 0;
   while (cur != 0) {
     pushdown(cur);
-    last = cur;
     int left_size = splay[splay[cur].child[0]].size;
 
     if (left_size + 1 == k) {
-      fnd = 1;
-      break;
+      return cur;
     } else if (left_size < k) {
       k -= left_size + 1;
       cur = splay[cur].child[1];
@@ -156,14 +160,32 @@ int search(int k) {
     }
   }
 
-  splaying(last);
-  if (!fnd)
-    return 0;
-  else
-    return last;
+  return 0;
 }
 
-void insert_segment(int pos, int newroot) {
+int fetch(int l, int r) {
+  int L = search(l);
+  int R = search(r + 2);
+
+  splaying(L, 0);
+  splaying(R, root);
+
+  return splay[R].child[0];
+}
+
+int cut(int l, int r) {
+  int index = fetch(l, r);
+  int parent = splay[index].parent;
+  splay[parent].child[0] = 0;
+  splay[index].parent = 0;
+
+  pushup(parent);
+  pushup(splay[parent].parent);
+
+  return index;
+}
+
+void paste(int pos, int newroot) {
   if (newroot == 0)
     return;
 
@@ -178,35 +200,26 @@ void insert_segment(int pos, int newroot) {
 
   pushup(L);
   pushup(R);
-  splaying(newroot);
 }
 
 void insert(int pos, const long long &val) {
   int newnode = newNode(val);
-  insert_segment(pos, newnode);
-}
-
-int fetch(int l, int r) {
-  int L = search(l);
-  int R = search(r + 2);
-
-  splaying(L, 0);
-  splaying(R, root);
-
-  return splay[R].child[0];
+  paste(pos, newnode);
 }
 
 int rev(int l, int r) {
-  int index = fetch(l + 1, r + 1);
+  int index = fetch(l, r);
   splay[index].lazy_rev ^= 1;
-  pushdown(index);
+
+  int parent = splay[index].parent;
+  pushup(parent);
+  pushup(splay[parent].parent);
+
   return index;
 }
 
 void del(int l, int r) {
-  int index = fetch(l, r);
-  int parent = splay[index].parent;
-  splay[parent].child[0] = 0;
+  int index = cut(l, r);
 
   stack<int> wait;
   wait.push(index);
@@ -244,10 +257,9 @@ void ranker() {
 
 void inorder(int index) {
   if (index != 0) {
-    pushdown(splay[index].child[0]);
+    pushdown(index);
     inorder(splay[index].child[0]);
     cout << splay[index].data << ' ';
-    pushdown(splay[index].child[1]);
     inorder(splay[index].child[1]);
   }
 }
@@ -290,11 +302,12 @@ int main() {
 
   root = build(1, n + 2, 0);
 
-  del(1, 2);
-
+  int subroot = cut(1, 2);
+  paste(7, subroot);
   int index = fetch(1, 2);
   cout << splay[index].sum << '\n';
 
+  del(4, 5);
   while (!rec.empty()) {
     cout << rec.top() << ' ';
     rec.pop();

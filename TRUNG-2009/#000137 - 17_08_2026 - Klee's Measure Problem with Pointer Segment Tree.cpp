@@ -7,7 +7,6 @@ struct node {
   long long down, up; // constant
   int count;          // dynamic
   long long length;   // dynamic
-  // value = count * length (current)
 
   node *left;
   node *right;
@@ -47,7 +46,7 @@ void insert(int l, int r, node *root) {
     return;
   if (l <= root->down && root->up <= r) {
     root->count++;
-    root->length = (root->up - root->down) * root->count;
+    root->length = root->up - root->down;
     return;
   }
   insert(l, r, root->left);

@@ -140,10 +140,12 @@ int main() {
 
   bool sub2 = true;
   bool sub3 = false;
+  int checksub3 = 0;
   for (int i = 1; i <= n; i++) {
 
     if (indeg[i] == n - 1) {
       sub3 = true;
+      checksub3++;
     }
 
     if (indeg[i] > 2) {
@@ -152,8 +154,8 @@ int main() {
   }
   // if (sub2)
   //   subtask2::solve();
-  if (sub3)
-    subtask2::solve();
+  if (sub3 && checksub3 == 1)
+    subtask3::solve();
 
   else
     fb::solve();

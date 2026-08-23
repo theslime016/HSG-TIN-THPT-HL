@@ -3,6 +3,18 @@ using namespace std;
 
 #define endl '\n'
 
+void __outdebug() { cerr << ']' << '\n'; }
+
+template <typename H, typename... T> void __outdebug(H head, T... tail) {
+  cerr << head;
+  if (sizeof...(tail))
+    cerr << ", ";
+  __outdebug(tail...);
+}
+
+#define debug(...)                                                             \
+  cerr << '[' << #__VA_ARGS__ << "] = [", __outdebug(__VA_ARGS__)
+
 // int128 type
 #ifdef __SIZEOF_INT128__
 typedef __int128_t int128;
@@ -92,18 +104,6 @@ typedef unsigned long long uint128;
 inline int getchar_unlocked() { return _getchar_nolock(); }
 inline int putchar_unlocked(int c) { return _putchar_nolock(c); }
 #endif
-
-// Eratosthenes
-template <size_t N, typename T>
-void sieve(T &is_prime) {
-  is_prime[0] = is_prime[1] = false;
-  for (size_t i = 2; i * i < N; i++) {
-    if (!is_prime[i]) continue;
-    for (size_t j = i * i; j < N; j += i) {
-      is_prime[j] = false;
-    }
-  }
-}
 
 #ifdef _LOCAL_DEBUG
 

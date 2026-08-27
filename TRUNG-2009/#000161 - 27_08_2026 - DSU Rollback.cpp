@@ -33,6 +33,7 @@ struct uf {
     b = fetch(b);
     if (a != b) {
       timeline.push({a, data[a]});
+      tag.push(timer);
       data[a] = b;
     }
   }

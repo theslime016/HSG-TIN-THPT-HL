@@ -1,0 +1,134 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int maxn = 405;
+const long long inf = 1e18;
+long long A[maxn];
+long long dp[maxn][maxn];
+int opt[maxn][maxn];
+long long res[maxn];
+
+struct query {
+  int l, r;
+  long long cost;
+  int rank;
+};
+vector<query> task[maxn];
+
+int main() {
+  cin.tie(0)->sync_with_stdio(0);
+
+  int n, m;
+  cin >> n >> m;
+
+  for (int i = 1; i <= n; i++)
+    cin >> A[i];
+
+  int count = 1;
+  for (int i = 1; i <= m; i++) {
+    int l, r;
+    long long cost;
+    int ref;
+    cin >> l >> r >> cost >> ref;
+    task[ref].push_back({l, r, cost, count++});
+  }
+
+  for (int i = 1; i <= n; i++) {
+    for (int j = i; j <= n; j++) {
+      dp[i][j] = A[j] - A[i];
+    }
+  }
+
+  for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= n; j++) {
+      cerr << dp[i][j] << ' ';
+    }
+    cerr << '\n';
+  }
+
+  for (int i = 1; i <= n; i++) {
+    for (int j = n; j >= i + 2; j--) {
+      for (int k = i + 1; k < j; k++) {
+        dp[i][j] = min(max(dp[i][k], dp[k][j]), dp[i][j]);
+      }
+    }
+  }
+
+  cerr << '\n';
+  for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= n; j++) {
+      cerr << dp[i][j] << ' ';
+    }
+    cerr << '\n';
+  }
+
+  return 0;
+  //// HERE
+
+  auto f = [&](int x, int y) { return A[y] - A[x]; };
+
+  for (const auto &x : task[0]) {
+    res[x.rank] = f(x.l, x.r) * x.cost;
+  }
+
+  for (int i = 1; i < n; i++) {
+    dp[i][i + 1] = f(i, i + 1);
+    opt[i][i + 1] = i;
+  }
+
+  for (const auto &x : task[n]) {
+    long long resf = 0;
+    for (int i = x.l; i < x.r; i++) {
+      resf = max(resf, dp[i][i + 1]);
+    }
+
+    res[x.rank] = resf * x.cost;
+  }
+
+  for (int len = 2; len <= n; len++) {
+    for (int i = 1; i <= n - len; i++) {
+      int j = i + len;
+      for (int k = opt[i][j - 1]; k <= opt[i + 1][j]; k++) {
+        if (k >= j)
+          break;
+
+        long long current = f(i, j);
+
+        if (current < dp[i][j]) {
+          dp[i][j] = current;
+          opt[i][j] = k;
+        }
+      }
+    }
+
+    if (len == 2) {
+      for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= n; j++) {
+          if (dp[i][j] != 0)
+            cout << i << ' ' << j << ' ' << dp[i][j] << '\n';
+        }
+      }
+    }
+
+    for (const auto &x : task[len - 1]) {
+      res[x.rank] = dp[x.l][x.r] * x.cost;
+    }
+
+    // ref = len - 1
+  }
+
+  long long ret = 0;
+  for (int i = 1; i <= m; i++) {
+    ret = max(ret, res[i]);
+    cerr << res[i] << ' ';
+  }
+
+  cerr << '\n';
+  for (int i = 0; i <= n; i++) {
+    for (const auto &x : task[i]) {
+      cerr << i << ' ' << x.l << ' ' << x.r << ' ' << x.cost << '\n';
+    }
+  }
+
+  cout << ret;
+}

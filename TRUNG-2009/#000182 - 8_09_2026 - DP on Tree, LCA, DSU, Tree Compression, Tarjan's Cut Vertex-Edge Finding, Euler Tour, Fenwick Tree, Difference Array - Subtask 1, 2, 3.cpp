@@ -137,16 +137,27 @@ int on_path(int a, int b, int x) {
 }
 
 int fenwick[maxn];
+
+void proc(int index, int val) {
+    for (; index < maxn; index++) {
+        fenwick[index] += val;
+    }
+}
+
+int fetch(int index) {
+    int res = 0;
+    for (; index > 0; index -= index & -index) {
+        res += fenwick[index];
+    }
+    return res;
+}
+
 void transport(int a, int b) {
-    fenwick[timein[get_lca(a, b)]]++;
-    while (!is_lca(a, b) && a) {
-        fenwick[timein[a]]++;
-        a = up[a][0];
-    }
-    while (!is_lca(b, a) && b) {
-        fenwick[timein[b]]++;
-        b = up[b][0];
-    }
+    int gp = get_lca(a, b);
+    if (up[gp][0] != 0) proc(timein[up[gp][0]], -1);
+    proc(timein[gp], -1);
+    proc(timein[a], 1);
+    proc(timein[b], 1);
 }
 
 int main() {
@@ -199,7 +210,7 @@ int main() {
     if (k == 0 || !on_path(a, b, x)) {
       cout << 0 << '\n';
     } else {
-      cout << fenwick[timein[x]] << '\n';
+      cout << fetch(timeout[x]) - fetch(timein[x] - 1) << '\n';
     }
   }
 }

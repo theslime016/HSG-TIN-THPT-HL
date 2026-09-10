@@ -38,8 +38,7 @@ long long rnd(long long l, long long r) {
 
 const int maxn = 1e5 + 5;
 const int maxhash = 2;
-/// HERE
-const long long base = 300;
+const long long base = rnd(300, 500);
 long long mod[maxhash] = {(long long)1e9 + 7, (long long)1e9 + 3};
 long long hashing[maxhash][maxn];
 long long power[maxhash][maxn];

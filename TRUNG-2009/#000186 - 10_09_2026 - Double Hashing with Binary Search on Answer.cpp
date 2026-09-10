@@ -98,14 +98,14 @@ int main() {
         res = max(res, best * 2 + 1);
 
         if (s[i] != s[i+1]) continue;
-        low = 0, high = min(i-1, n-i+1), best = 0;
+        low = 0, high = min(i-1, n-i-1), best = 0;
         while (low <= high) {
             int len = low + (high - low)/2;
             if (verify(i - len, i + len + 1)) {
                 best = len;
-                low++;
+                low = len + 1;
             } else {
-                high--;
+                high = len - 1;
             }
         }
         res = max(res, (best+1)*2);

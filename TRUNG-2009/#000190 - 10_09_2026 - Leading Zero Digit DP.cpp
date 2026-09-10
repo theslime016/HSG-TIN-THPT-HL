@@ -35,7 +35,6 @@ long long get_num(const long long &val) {
     int _end = s[0] - '0';
     for (int num = 1; num <= _end; num += 2) {
         res += dfs(1, 1, num == _end, s);
-        if (n == 1) res++;
     }
     return res;
 }

@@ -29,7 +29,7 @@ void merge_sort(int l, int r) {
     while (pt1 <= mid) temp[pos++] = A[pt1++];
     while (pt2 <= r) temp[pos++] = A[pt2++];
 
-    swap_ranges(temp, temp + pos, A + l);
+    copy(temp, temp + pos, A + l);
 }
 
 #define _debug 0

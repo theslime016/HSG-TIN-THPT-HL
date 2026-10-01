@@ -44,7 +44,7 @@ int main() {
                     l += sz;
                 } else {
                     int pt = (index - 1) * sz + 1;
-                    int nxt = index * sz;
+                    int nxt = min(n, index * sz);
                     block[index] = 0;
                     while (pt <= nxt) {
                         if (lazy_set[index]) A[pt] = lazy_set[index];
@@ -72,7 +72,7 @@ int main() {
                     l += sz;
                 } else {
                     int pt = (index - 1) * sz + 1;
-                    int nxt = index * sz;
+                    int nxt = min(n, index * sz);
                     block[index] = 0;
                     while (pt <= nxt) {
                         if (pt >= l && pt <= r) A[pt] = val;

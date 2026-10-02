@@ -1,1 +1,1 @@
-![https://i.postimg.cc/7xqjZSbv/811268.jpg](https://i.postimg.cc/vQRCcH6p/811268.jpg)
+![https://raw.githubusercontent.com/theslime016/HSG-TIN-THPT-HL/refs/heads/main/TRUNG-2009/_REM.jpg](https://raw.githubusercontent.com/theslime016/HSG-TIN-THPT-HL/refs/heads/main/TRUNG-2009/_REM.jpg)

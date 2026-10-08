@@ -7,6 +7,8 @@ const int padding = 1e5;
 const int inf = 1e9;
 const int maxnum = 1e6 + 5;
 int A[maxn];
+long long cnt[maxn];
+int rollback[maxn]; // index
 
 inline int proc(int index, int n) {
   if (index < 1 || index + 4 > n) return inf;
@@ -32,8 +34,8 @@ int main() {
       cin >> A[i];
     }
 
-    vector<int> cnt(maxnum, 0);
     long long res = 0;
+    int pt = 1;
     for (int i = 1; i <= n; i++) {
       int v1 = proc(i, n);
       if (v1 == inf) continue;
@@ -42,8 +44,16 @@ int main() {
       int v3 = proc(i-4, n);
       if (v2 == v1) res--;
       if (v3 == v1) res--;
+      if (cnt[v1] == 0) {
+        rollback[pt++] = v1;
+      }
       cnt[v1]++;
     }
+
+    while (pt > 0) {
+      cnt[ rollback[pt--] ] = 0;
+    }
+
     cout << res << '\n';
   }
 

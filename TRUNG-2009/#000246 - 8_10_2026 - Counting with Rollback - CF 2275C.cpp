@@ -35,7 +35,7 @@ int main() {
     }
 
     long long res = 0;
-    int pt = 1;
+    int pt = 0;
     for (int i = 1; i <= n; i++) {
       int v1 = proc(i, n);
       if (v1 == inf) continue;
@@ -51,7 +51,7 @@ int main() {
     }
 
     while (pt > 0) {
-      cnt[ rollback[pt--] ] = 0;
+      cnt[ rollback[--pt] ] = 0;
     }
 
     cout << res << '\n';

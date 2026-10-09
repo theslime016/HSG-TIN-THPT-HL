@@ -33,7 +33,7 @@ int main() {
   #endif // _debug
 
   cin >> n >> q;
-  sz = max(1, n / (int)sqrt(q));
+  sz = sqrt(n);
   num_block = (n-1)/sz + 1;
   for (int i = 1; i <= n; i++) {
     cin >> A[i];

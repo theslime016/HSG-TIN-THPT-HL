@@ -38,7 +38,7 @@ int main() {
 
   for (int i = 1; i <= num_block; i++) {
     lblock[i] = (i-1)*sz + 1;
-    rblock[i] = i*sz;
+    rblock[i] = min(n, i*sz);
     sort(B + lblock[i], B + rblock[i] + 1);
   }
 
@@ -58,11 +58,12 @@ int main() {
 
       while (l <= r) {
         int tag = get_index[l];
-        if ((l - 1)%sz == 0 && l + sz < r) {
-          int index = lower_bound(B + lblock[tag], B + rblock[tag] + 1, k) - (B + lblock[tag]);
-          index += lblock[tag];
-          if (index <= rblock[tag]) res = min(res, B[index]);
-          l += sz;
+        if (l == lblock[tag] && rblock[tag] <= r) {
+          auto it = lower_bound(B + lblock[tag], B + rblock[tag] + 1, k);
+          if (it != B + rblock[tag] + 1) {
+            res = min(res, *it);
+          }
+          l = rblock[tag] + 1;
         } else {
           if (A[l] >= k) res = min(res, A[l]);
           l++;

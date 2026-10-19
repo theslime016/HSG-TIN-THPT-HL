@@ -42,6 +42,7 @@ Follow this workflow when contributing code:
   - Đàm Thế Bảo (2008)
   - Phan Hoàng Kiên (2008)
   - Hoàng An Kỳ (2008)
+![11-24/25](https://raw.githubusercontent.com/theslime016/HSG-TIN-THPT-HL/refs/heads/main/K11%20-%201st%20-%202024-2025.jpg)
   
 * 2025 - 2026:
   - Nguyễn Tùng Dương (2008)

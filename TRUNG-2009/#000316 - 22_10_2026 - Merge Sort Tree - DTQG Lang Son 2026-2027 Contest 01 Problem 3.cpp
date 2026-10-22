@@ -40,7 +40,7 @@ NODE proc(const NODE& a, const NODE& b) {
   res.cnt = a.cnt + b.cnt;
   res.left = a.left;
   res.right = b.right;
-  if (a.left && b.right) res.cnt--;
+  if (a.right && b.left) res.cnt--;
 
   res.container = a.container;
   for (const auto& x : b.container) {

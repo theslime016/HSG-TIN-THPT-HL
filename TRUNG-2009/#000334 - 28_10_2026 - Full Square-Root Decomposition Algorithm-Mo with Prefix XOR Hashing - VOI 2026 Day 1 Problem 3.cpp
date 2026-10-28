@@ -222,7 +222,7 @@ struct SUB2 : SUB4 { /// SUB 2
   }
 } sub2;
 
-struct SUB5 { /// SUB 5
+struct SUB56 { /// SUB 5,6
   int block_size;
   int block_cnt;
   vector<long long> xor_hashing;
@@ -413,7 +413,7 @@ struct SUB5 { /// SUB 5
     }
   }
 
-} sub5;
+} sub56;
 
 int main() {
   cin.tie(0)->sync_with_stdio(0);
@@ -475,12 +475,9 @@ int main() {
     return 0;
   }
 
-  if (q <= 30'000) {
-    debug("SUB5");
-    newline;
+  debug("SUB56");
+  newline;
 
-    sub5.init();
-    sub5.solve();
-  }
-
+  sub56.init();
+  sub56.solve();
 }

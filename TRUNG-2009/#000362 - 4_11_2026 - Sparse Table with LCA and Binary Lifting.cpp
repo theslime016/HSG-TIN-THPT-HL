@@ -30,7 +30,7 @@ void log_out(H h, T... t) {
 #endif // _debug
 
 const int maxn = 3e5 + 5;
-const int maxlog = __lg(maxn);
+const int maxlog = __lg(maxn) + 1;
 
 int n, q;
 vector<pair<int, long long>> adj[maxn]; // index - value
@@ -74,7 +74,7 @@ long long binary_lift(int index, int tar) {
     }
   }
 
-  if (up[index][0]) res += dist[index][0];
+  if (up[index][0] && !is_lca(index, tar)) res += dist[index][0];
   return res;
 }
 
@@ -120,7 +120,7 @@ int main() {
     newline;
   }
 
-  int t1 = 7, t2 = 5;
+  int t1 = 6, t2 = 8;
   debug(binary_lift(t1, t2));
   debug(binary_lift(t2, t1));
   newline;

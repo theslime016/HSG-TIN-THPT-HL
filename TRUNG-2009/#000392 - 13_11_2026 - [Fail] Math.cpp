@@ -63,7 +63,7 @@ int main() {
     long long down = 2 * (a - c);
 
     long long x = up/down;
-    long long res = min(make(x), make(x + 1));
+    long long res = min({make(x), make(x + 1), make(x-1)});
     cout << res << '\n';
   }
 }

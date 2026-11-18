@@ -63,8 +63,10 @@ POINT point[maxn];
 vector<POINT> hull;
 int get_pos(const POINT& p) {
   if (hull.size() <= 2) return 0;
-  if (get_det(hull[1] - hull[0], p - hull[1]) < 0) return 0;
-  if (get_det(hull[0] - hull.back(), p - hull[0]) < 0) return 0;
+  long long d1 = get_det(hull[1] - hull[0], p - hull[1]);
+  long long d2 = get_det(hull[0] - hull.back(), p - hull[0];
+  if (d1 < 0 || d2 < 0) return 0;
+  if (d1 == 0 || d2 == 0) return 2;
 
   POINT v1 = p - hull[0];
 
